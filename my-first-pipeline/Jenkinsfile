@@ -12,13 +12,17 @@ pipeline {
     }
     stage('Install package') {
       steps {
-        sh 'npm install'
+        dir('app') { // Navigate to the directory where package.json is located
+          sh 'npm install'
+        }
       }
     }
 
     stage('run app') {
       steps {
-        sh 'npm run start'
+        dir('app') { // Ensure we are in the correct directory
+          sh 'npm run start'
+        }
       }
     }
   }
