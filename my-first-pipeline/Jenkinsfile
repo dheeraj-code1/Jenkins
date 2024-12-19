@@ -15,6 +15,7 @@ pipeline {
     }
     stage('Install package') {
       steps {
+        sh 'sudo chown -R 111:113 "/.npm"'
         dir('my-first-pipeline') { // Navigate to the directory where package.json is located
           sh 'npm install'
         }
