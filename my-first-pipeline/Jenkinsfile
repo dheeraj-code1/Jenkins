@@ -12,7 +12,7 @@ pipeline {
     }
     stage('Install package') {
       steps {
-        dir('app') { // Navigate to the directory where package.json is located
+        dir('my-first-pipeline') { // Navigate to the directory where package.json is located
           sh 'npm install'
         }
       }
@@ -20,7 +20,7 @@ pipeline {
 
     stage('run app') {
       steps {
-        dir('app') { // Ensure we are in the correct directory
+        dir('my-first-pipeline') { // Ensure we are in the correct directory
           sh 'npm run start'
         }
       }
