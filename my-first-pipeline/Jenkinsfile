@@ -3,9 +3,21 @@ pipeline {
     docker { image 'node:16-alpine' }
   }
   stages {
-    stage('Test') {
+    stage('Checkout Code') {
+            steps {
+                // Use the SCM settings from the Jenkins job configuration
+                checkout scm
+            }
+    }
+    stage('Install package') {
       steps {
-        sh 'node --version'
+        sh 'npm install'
+      }
+    }
+
+    stage('Install package') {
+      steps {
+        sh 'npm run start'
       }
     }
   }
