@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker { 
       image 'node:16-alpine'
-      args '-u root' // Changed to root user to avoid permission issues
+      args '-u root -p 3000:3000' // Added port mapping
     }
   }
   stages {
@@ -16,20 +16,15 @@ pipeline {
     stage('Install package') {
       steps {
         dir('my-first-pipeline') {
-          // Create and set ownership of npm cache directory
-          sh '''
-            mkdir -p /.npm
-            chown -R $(id -u):$(id -g) /.npm
-            npm install --prefix $(pwd)
-          '''
+          sh 'npm install'  // Simplified install command
         }
       }
     }
 
     stage('run app') {
       steps {
-        dir('my-first-pipeline') { // Ensure we are in the correct directory
-          sh 'npm run start --prefix $(pwd)'
+        dir('my-first-pipeline') {
+          sh 'npm run start'  // Run the application
         }
       }
     }
