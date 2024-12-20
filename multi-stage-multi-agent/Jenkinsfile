@@ -23,9 +23,11 @@ pipeline {
       agent {
         docker { image 'mysql:latest'}
       }
+      steps {
       sh '''
       SHOW DATABASES;
       '''
+      }
     }
   }
 }
