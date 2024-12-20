@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker { 
       image 'node:16-alpine' 
-      // args '-u 111:113' 
+      args '-u 111:113' 
       }
   }
   stages {
@@ -16,7 +16,7 @@ pipeline {
     stage('Install package') {
       steps {
         dir('my-first-pipeline') { // Navigate to the directory where package.json is located
-          sh  'npm config set cache $(pwd)/.npm-cache --global && npm install'
+          sh 'npm install --prefix $(pwd)'
         }
       }
     }
@@ -24,7 +24,7 @@ pipeline {
     stage('run app') {
       steps {
         dir('my-first-pipeline') { // Ensure we are in the correct directory
-          sh 'npm run start'
+          sh 'npm run start --prefix $(pwd)'
         }
       }
     }
