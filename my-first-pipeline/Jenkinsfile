@@ -1,22 +1,27 @@
 pipeline {
   agent {
     docker { 
-      image 'node:16-alpine' 
-      args '-u 111:113' 
-      }
+      image 'node:16-alpine'
+      args '-u root' // Changed to root user to avoid permission issues
+    }
   }
   stages {
     stage('Checkout Code') {
-            steps {
-                // Use the SCM settings from the Jenkins job configuration
-                checkout scm
-                sh 'ls -la'
-            }
+      steps {
+        checkout scm
+        sh 'ls -la'
+      }
     }
+    
     stage('Install package') {
       steps {
-        dir('my-first-pipeline') { // Navigate to the directory where package.json is located
-          sh 'npm install --prefix $(pwd)'
+        dir('my-first-pipeline') {
+          // Create and set ownership of npm cache directory
+          sh '''
+            mkdir -p /.npm
+            chown -R $(id -u):$(id -g) /.npm
+            npm install --prefix $(pwd)
+          '''
         }
       }
     }
